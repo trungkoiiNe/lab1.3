@@ -19,9 +19,9 @@ const App = () => {
   useEffect(() => {
     const handleOrientationChange = () => {
       if (windowWidth > windowHeight) {
-        setOrientation('landscape');
+        setOrientation("landscape");
       } else {
-        setOrientation('portrait');
+        setOrientation("portrait");
       }
     };
 
@@ -31,7 +31,9 @@ const App = () => {
   const isLandscape = orientation === "landscape";
 
   const buttonWidth = isLandscape ? windowWidth * 0.25 : windowWidth * 0.5;
-  const imageWidth = Math.round(isLandscape ? 0.8 * 0.4 * windowWidth : 0.8 * windowWidth);
+  const imageWidth = Math.round(
+    isLandscape ? 0.8 * 0.4 * windowWidth : 0.8 * windowWidth
+  );
   const imageHeight = isLandscape
     ? Math.round(0.4 * windowHeight)
     : Math.round(0.3 * windowHeight);
@@ -41,10 +43,13 @@ const App = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <StatusBar
-        backgroundColor={isLandscape ? "#f0f0f0" : "#ffffff"}
-        barStyle={isLandscape ? "dark-content" : "light-content"}
+        backgroundColor={isLandscape ? "#ebb813" : "#ffffff"}
+        barStyle={isLandscape ? "light-content" : "dark-content"}
       />
       <TouchableOpacity onPress={logImageSize}>
         <Image
