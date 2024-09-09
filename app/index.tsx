@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  KeyboardAvoidingView,
   StatusBar,
   Platform,
   StyleSheet,
@@ -31,29 +30,32 @@ const App = () => {
 
   const isLandscape = orientation === "landscape";
 
-  const buttonWidth = isLandscape ? width / 4 : width / 2 - 20;
-  const imageWidth = width * 0.8;
-  const imageHeight = isLandscape ? height * 0.4 : height * 0.3;
+  // button width= width/4
+  const buttonWidth = width / 4;
+  const imageWidth = Math.round(width * 0.8);
+  const imageHeight = isLandscape
+    ? Math.round(height * 0.4)
+    : Math.round(height * 0.3);
+  const uri = `https://via.placeholder.com/${imageWidth}x${imageHeight}`;
+  const logImageSize = () => {
+    console.log(uri);
+  };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <View style={styles.container}>
       <StatusBar
         backgroundColor={isLandscape ? "#f0f0f0" : "#ffffff"}
         barStyle={isLandscape ? "dark-content" : "light-content"}
       />
-      <Image
-        source={{ uri: `https://picsum.photos/${imageWidth}/${imageHeight}` }}
-        // style={[styles.image, { width: imageWidth, height: imageHeight }]}
-      />
-      <View
-        style={[
-          styles.buttonContainer,
-          isLandscape && styles.buttonContainerLandscape,
-        ]}
-      >
+      <TouchableOpacity onPress={logImageSize}>
+        <Image
+          source={{
+            uri: `https://via.placeholder.com/${imageWidth}x${imageHeight}`,
+          }}
+          style={[styles.image, { width: imageWidth, height: imageHeight }]}
+        />
+      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[
             styles.button,
@@ -64,7 +66,7 @@ const App = () => {
             }),
           ]}
         >
-          <Text style={styles.buttonText}>Button 1</Text>
+          <Text style={styles.buttonText}>{buttonWidth}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -76,7 +78,7 @@ const App = () => {
             }),
           ]}
         >
-          <Text style={styles.buttonText}>Button 2</Text>
+          <Text style={styles.buttonText}>{buttonWidth}</Text>
         </TouchableOpacity>
       </View>
       <TextInput
@@ -84,7 +86,7 @@ const App = () => {
         placeholder="Enter text here"
         placeholderTextColor="#999"
       />
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -100,19 +102,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonContainer: {
-    flexDirection: "column",
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
-  },
-  buttonContainerLandscape: {
-    flexDirection: "row",
+    width: "50%", // Set the container width to 50% of the screen
   },
   button: {
     backgroundColor: "#007AFF",
     padding: 15,
     borderRadius: 5,
-    marginVertical: 10,
     alignItems: "center",
   },
   buttonIOS: {
@@ -143,6 +142,11 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
       },
     }),
+  },
+  line: {
+    height: 1,
+    backgroundColor: "black",
+    marginVertical: 10,
   },
 });
 
