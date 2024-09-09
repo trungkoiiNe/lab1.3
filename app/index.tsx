@@ -5,12 +5,14 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  StatusBar,
   Platform,
   KeyboardAvoidingView,
   StyleSheet,
   useWindowDimensions,
+  SafeAreaView
 } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+// import { SafeAreaView } from "react-native-safe-area-context";
 
 const App = () => {
   const [orientation, setOrientation] = useState("portrait");
@@ -43,57 +45,59 @@ const App = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <StatusBar
-        backgroundColor={isLandscape ? "#ebb813" : "#ffffff"}
-        barStyle={isLandscape ? "light-content" : "dark-content"}
-      />
-      <TouchableOpacity onPress={logImageSize}>
-        <Image
-          source={{ uri }}
-          style={[styles.image, { width: imageWidth, height: imageHeight }]}
-        />
-      </TouchableOpacity>
-      <View
-        style={[
-          styles.buttonContainer,
-          { flexDirection: isLandscape ? "row" : "column" },
-        ]}
+    // <SafeAreaView>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <TouchableOpacity
+        <StatusBar
+          style={isLandscape ? "dark" : "light"}
+          // backgroundColor={isLandscape ? "light-green" : "blue"}
+        />
+        <TouchableOpacity onPress={logImageSize}>
+          <Image
+            source={{ uri }}
+            style={[styles.image, { width: imageWidth, height: imageHeight }]}
+          />
+        </TouchableOpacity>
+        <View
           style={[
-            styles.button,
-            { width: buttonWidth },
-            Platform.select({
-              ios: styles.buttonIOS,
-              android: styles.buttonAndroid,
-            }),
+            styles.buttonContainer,
+            { flexDirection: isLandscape ? "row" : "column" },
           ]}
         >
-          <Text style={styles.buttonText}>{buttonWidth}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            { width: buttonWidth },
-            Platform.select({
-              ios: styles.buttonIOS,
-              android: styles.buttonAndroid,
-            }),
-          ]}
-        >
-          <Text style={styles.buttonText}>{buttonWidth}</Text>
-        </TouchableOpacity>
-      </View>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter text here"
-        placeholderTextColor="#999"
-      />
-    </KeyboardAvoidingView>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              { width: buttonWidth },
+              Platform.select({
+                ios: styles.buttonIOS,
+                android: styles.buttonAndroid,
+              }),
+            ]}
+          >
+            <Text style={styles.buttonText}>{buttonWidth}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              { width: buttonWidth },
+              Platform.select({
+                ios: styles.buttonIOS,
+                android: styles.buttonAndroid,
+              }),
+            ]}
+          >
+            <Text style={styles.buttonText}>{buttonWidth}</Text>
+          </TouchableOpacity>
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter text here"
+          placeholderTextColor="#999"
+        />
+      </KeyboardAvoidingView>
+    // </SafeAreaView>
   );
 };
 
@@ -127,7 +131,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  buttonAndroid: {},
+  buttonAndroid: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    backgroundColor: "red",
+  },
   buttonText: {
     color: "#FFFFFF",
     fontSize: 16,

@@ -31,6 +31,16 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#C2185B",
+      "translucent": false,
+      "barStyle": "light-content",
+      "hidden":false,
+      "style":"auto",
+      "animated":true,
+      "networkActivityIndicatorVisible":false,
+      "showHideTransition":"fade"
     }
   }
 }
