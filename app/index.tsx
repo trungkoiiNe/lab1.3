@@ -7,55 +7,57 @@ import {
   TextInput,
   StatusBar,
   Platform,
+  KeyboardAvoidingView,
   StyleSheet,
   useWindowDimensions,
-  Dimensions,
 } from "react-native";
 
 const App = () => {
-  const { width, height } = useWindowDimensions();
   const [orientation, setOrientation] = useState("portrait");
+  const { width: windowWidth, height: windowHeight } = useWindowDimensions();
 
   useEffect(() => {
-    const updateOrientation = () => {
-      setOrientation(height > width ? "portrait" : "landscape");
+    const handleOrientationChange = () => {
+      if (windowWidth > windowHeight) {
+        setOrientation('landscape');
+      } else {
+        setOrientation('portrait');
+      }
     };
-    updateOrientation();
-    const subscription = Dimensions.addEventListener(
-      "change",
-      updateOrientation
-    );
-    return () => subscription.remove();
-  }, [width, height]);
+
+    handleOrientationChange();
+  }, [windowWidth, windowHeight]);
 
   const isLandscape = orientation === "landscape";
 
-  // button width= width/4
-  const buttonWidth = width / 4;
-  const imageWidth = Math.round(width * 0.8);
+  const buttonWidth = isLandscape ? windowWidth * 0.25 : windowWidth * 0.5;
+  const imageWidth = Math.round(isLandscape ? 0.8 * 0.4 * windowWidth : 0.8 * windowWidth);
   const imageHeight = isLandscape
-    ? Math.round(height * 0.4)
-    : Math.round(height * 0.3);
+    ? Math.round(0.4 * windowHeight)
+    : Math.round(0.3 * windowHeight);
   const uri = `https://via.placeholder.com/${imageWidth}x${imageHeight}`;
   const logImageSize = () => {
     console.log(uri);
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <StatusBar
         backgroundColor={isLandscape ? "#f0f0f0" : "#ffffff"}
         barStyle={isLandscape ? "dark-content" : "light-content"}
       />
       <TouchableOpacity onPress={logImageSize}>
         <Image
-          source={{
-            uri: `https://via.placeholder.com/${imageWidth}x${imageHeight}`,
-          }}
+          source={{ uri }}
           style={[styles.image, { width: imageWidth, height: imageHeight }]}
         />
       </TouchableOpacity>
-      <View style={styles.buttonContainer}>
+      <View
+        style={[
+          styles.buttonContainer,
+          { flexDirection: isLandscape ? "row" : "column" },
+        ]}
+      >
         <TouchableOpacity
           style={[
             styles.button,
@@ -86,7 +88,7 @@ const App = () => {
         placeholder="Enter text here"
         placeholderTextColor="#999"
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -102,17 +104,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonContainer: {
-    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
-    width: "50%", // Set the container width to 50% of the screen
+    width: "50%",
   },
   button: {
     backgroundColor: "#007AFF",
     padding: 15,
     borderRadius: 5,
     alignItems: "center",
+    margin: 5,
   },
   buttonIOS: {
     shadowColor: "#000",
@@ -142,11 +144,6 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
       },
     }),
-  },
-  line: {
-    height: 1,
-    backgroundColor: "black",
-    marginVertical: 10,
   },
 });
 
